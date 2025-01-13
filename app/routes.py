@@ -1,12 +1,14 @@
-from flask import Flask, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from db_models.clientes import Cliente
+from flask import Blueprint, request, jsonify, redirect, url_for
+from . import db
+from app.clientes import Cliente
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app/database.db' # Especifica o camiho onde será salvo os dados
-db = SQLAlchemy(app)
+main = Blueprint
 
-@app.route('/register', methods=['POST'])
+@main.route('/')
+def index():
+    return "Bem-vindo ao sistema de cadastro de clientes!"
+
+@main.route('/register', methods=['POST'])
 def cadastrar():
     nome = request.form['nome']
     email = request.form['email']
@@ -28,13 +30,9 @@ def cadastrar():
 
     db.session.add(novo_cliente)
     db.session.commit()
-    
-    return redirect ('/')
+    return jsonify(novo_cliente.to_dict())
 
-@app.route('/')
-def index():
+@main.route('/clientes')
+def listar_clientes():
     clientes = Cliente.query.all()
-    return render_template('index.html', clientes=clientes)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return jsonify([cliente.to_dict() for cliente in clientes])

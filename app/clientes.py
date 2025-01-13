@@ -1,4 +1,4 @@
-from app import db # importação deve ser de onde configurou o db
+from . import db # importação deve ser de onde configurou o db
 
 class Cliente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -10,4 +10,14 @@ class Cliente(db.Model):
     descricao_servico = db.Column(db.String(120), nullable=False)
     data_cadastro = db.Column(db.DateTime, default=db.func.current_timestamp())
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nome": self.nome,
+            "email": self.email,
+            "telefone": self.telefone,
+            "endereco": self.endereco,
+            "valor_servico": self.valor_servico,
+            "descricao_servico": self.descricao_servico
+        }
 
