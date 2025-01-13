@@ -8,12 +8,19 @@
 </head>
 <body>
     <h1>Cadastro de Clientes</h1>
-    <form action="{{ url_for('register') }}" method="post">
-        <p><label >Nome: <input type="text" id="nome" name="nome" required></label></p>
-        <p><label >E-mail: <input type="email" id="email" name="email" required></label></p>
+
+    <nav>
+        <ul>
+            <li><a href="clientes.html">Ver Lista de Clientes Cadastrados</a></li> 
+        </ul>
+    </nav>
+
+    <form action="{{ url_for('main.register') }}" method="post">
+        <p><label >Nome: <input type="text" id="nome" autofocus name="nome" required></label></p>
+        <p><label >E-mail: <input type="email" id="email" name="email" placeholder="exemplo@mail.com" required></label></p>
         <p><label >Telefone: <input type="tel" id="telefone" name="telefone" required></label></p>
         <p><label >Endereço: <input type="text" id="endereco" name="endereco" required></label></p>
-        <p><label >CPF: <input type="" id="cpf" name="cpf" required></label></p>
+        <p><label >CPF: <input type="" id="cpf" name="cpf" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" placeholder="xxx.xxx.xxx-xx" required></label></p>
        
         <p><label>Valor do Serviço (R$): 
             <input type="number" id="service_value" name="service_value" step="0.01" min="0" required>
