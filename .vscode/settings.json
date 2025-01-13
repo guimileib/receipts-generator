@@ -2,6 +2,7 @@
     "files.exclude": {
         "**/.git": true,
         "**/.gitignore": true,
-        "**/.__pycache__": true
+        "**/__pycache__": true,
+        "**/venv": true,
     }
 }
