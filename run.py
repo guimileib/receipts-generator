@@ -1,5 +1,6 @@
 from app import create_app
 from dotenv import load_dotenv
+from flask_mail import Mail
 
 load_dotenv()
 

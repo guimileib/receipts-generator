@@ -15,7 +15,7 @@ def gerar_pdf(cliente):
 
     # Cabeçalho com logo e título
     c.setFillColor(colors.white)
-    image_path = os.path.join(os.getcwd(), 'app', 'static', 'images', 'logo.png')
+    image_path = os.path.join(os.getcwd(), 'static', 'images', 'logo.png')
     if os.path.exists(image_path):
         c.drawImage(image_path, 40, 720, width=120, height=70)
     c.setFont("Helvetica-Bold", 24)
@@ -30,11 +30,13 @@ def gerar_pdf(cliente):
     c.drawString(50, 700, f"Cliente: {cliente.nome}")
     c.drawString(50, 680, f"Email: {cliente.email}")
     c.drawString(50, 660, f"Telefone: {cliente.telefone}")
+    c.drawString(50, 640, " ")
 
     # Informações do serviço
     c.setFont("Helvetica", 12)
     c.drawString(50, 640, f"Descrição do Serviço:")
     c.drawString(50, 620, f"{cliente.descricao_servico}")
+    c.drawString(50, 640, " ")
     c.drawString(50, 600, f"Valor do Serviço: R$ {cliente.valor_servico:.2f}")
     c.drawString(50, 580, f"Data de Cadastro: {cliente.data_cadastro.strftime('%d/%m/%Y %H:%M:%S')}")
 
@@ -42,7 +44,7 @@ def gerar_pdf(cliente):
     c.setFillColor(colors.white)
     c.setFont("Helvetica-Oblique", 10)
     c.drawString(50, 50, "Obrigado por confiar em nossos serviços!")
-    c.drawString(50, 35, "Para mais informações, entre em contato: contato@viladosol.com")
+    c.drawString(50, 35, "Para mais informações, entre em contato: espacoviladosol@gmail.com")
 
     # Linha decorativa no rodapé
     c.setLineWidth(2)

@@ -8,9 +8,9 @@ from .mail import enviar_email
 
 main = Blueprint('main', __name__, template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'))
 
-@main.route('/')
-def index():
-    return "Bem-vindo ao sistema de cadastro de clientes!"
+@main.route("/")
+def home():
+    return render_template('register.html')
 
 @main.route('/register', methods=['GET'])
 def show_register_form():
