@@ -1,16 +1,55 @@
 from io import BytesIO
-from flask import Blueprint, request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect, session, flash
 from . import db
 from app.clientes import Cliente
 import os
+from functools import wraps
+from dotenv import load_dotenv
 from .pdf import gerar_pdf
 from .mail import enviar_email
 
+
 main = Blueprint('main', __name__, template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'))
 
-@main.route("/")
-def home():
-    return render_template('register.html')
+def login_required(f):
+    @wraps(f) 
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' not in session:
+            flash('Você precisa fazer login primeiro', 'warning') # Mensagem de alerta
+            return redirect('/login') 
+        return f(*args, **kwargs) # Executa a função original
+    return decorated_function
+
+@main.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        load_dotenv()
+
+        if username == os.getenv('USER') and os.getenv('PASSWORD') == password:
+            session['logged_in'] = True
+            session['username'] = username
+            flash('Login efetuado com sucesso!', 'success')
+            return redirect('/clientes')
+        else:
+            flash('Usuário ou senha inválidos', 'danger')
+    
+    return render_template('login.html')
+
+# Rota protegida (painel de controle)
+@main.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html', username=session['username'])
+
+# Logout
+@main.route('/logout')
+def logout():
+    session.clear()
+    flash('Você saiu da conta!', 'info')
+    return redirect('/login')
 
 @main.route('/register', methods=['GET'])
 def show_register_form():
