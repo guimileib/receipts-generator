@@ -1,5 +1,5 @@
 from io import BytesIO
-from flask import Blueprint, request, render_template, redirect, session, flash
+from flask import Blueprint, request, render_template, redirect, session, flash, send_file
 from . import db
 from app.clientes import Cliente
 import os
@@ -7,6 +7,8 @@ from functools import wraps
 from dotenv import load_dotenv
 from .pdf import gerar_pdf
 from .mail import enviar_email
+import pandas as pd
+
 
 
 main = Blueprint('main', __name__, template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'))
@@ -52,6 +54,7 @@ def logout():
     return redirect('/login')
 
 @main.route('/register', methods=['GET'])
+@login_required
 def show_register_form():
     return render_template('register.html')
 
@@ -86,6 +89,32 @@ def register():
     
 
 @main.route('/clientes')
+@login_required
 def listar_clientes():
     clientes = Cliente.query.all()
     return render_template('clientes.html', clientes=clientes)
+
+#Simulando importação de dados
+clientes = [
+    {"nome": "João Silva", "email": "joao@email.com", "telefone": "123456789", "valor_servico": 150.00},
+    {"nome": "Maria Souza", "email": "maria@email.com", "telefone": "987654321", "valor_servico": 200.00}
+]
+
+
+@main.route('/exportar')
+def exportar():
+    clientes = Cliente.query.all()
+    clientes_lista = [{
+        'Nome': cliente.nome,
+        'Email': cliente.email,
+        'Telefone': cliente.telefone,
+        'Descrição do Serviço': cliente.descricao_servico,
+        'Valor do Serviço': cliente.valor_servico,
+        'Data de Cadastro': cliente.data_cadastro.strftime('%d/%m/%Y %H:%M:%S')
+    } for cliente in clientes]
+    df = pd.DataFrame(clientes)
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False)
+    output.seek(0)
+    return send_file(output, download_name='clientes.xlsx', as_attachment=True, mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

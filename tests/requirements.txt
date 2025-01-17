@@ -3,4 +3,4 @@ Flask-SQLAlchemy
 reportlab
 Flask-Mail
 python-dotenv
-openpyxl
+pandas-openpyxl
