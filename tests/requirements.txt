@@ -1,6 +1,0 @@
-Flask 
-Flask-SQLAlchemy
-reportlab
-Flask-Mail
-python-dotenv
-pandas-openpyxl
