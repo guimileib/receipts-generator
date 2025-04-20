@@ -10,3 +10,15 @@ Através de um formulário, o usuário insere os dados necessários, e o sistema
 - Cadastro e listagem de clientes.
 - Exportação de dados de clientes para Excel.
 - Envio de contratos por e-mail (PDF).
+
+### Como fazer o login?
+Configure as variáveis de ambiente criando um arquivo .env na raiz do projeto:
+```
+USER=seu_usuario
+PASSWORD=sua_senha
+SECRET_KEY=sua_chave_secreta
+```
+### Como gerar os contratos?
+Coloque o arquivo *contrato_modelo.docx* na pasta **static/doc/** (você vai precisar criar um folder doc e colocar o modelo de contrato dentro da pasta).
+
+
