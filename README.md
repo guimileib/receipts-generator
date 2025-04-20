@@ -1,4 +1,4 @@
-# Gerador de Contratos Freelancer
+# Management Center: Receipts-Generator
 Este projeto é uma aplicação web desenvolvida com Flask que permite gerar contratos personalizados para freelancers. 
 Através de um formulário, o usuário insere os dados necessários, e o sistema gera um documento .docx com as informações preenchidas.
 
