@@ -29,6 +29,8 @@
 
         nav {
             margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
         }
 
         nav ul {
@@ -90,9 +92,75 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            width: 100%; 
         }
-
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .btn-excluir {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .btn-excluir:hover {
+            background-color: #d32f2f;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .modal-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .confirm-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background-color: #ccc;
+            color: black;
+        }
     </style>
 
 </head>
@@ -105,7 +173,20 @@
         <ul>
             <li><a href="{{ url_for('main.register') }}">Voltar para Cadastro</a></li> 
         </ul>
+        <ul>
+            <li><a href="{{ url_for('main.dashboard') }}">Voltar ao Menu Principal</a></li>
+        </ul>
     </nav>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     
     <table border="1">
         <thead>
@@ -114,22 +195,76 @@
                 <th>Email</th>
                 <th>Telefone</th>
                 <th>Valor do Serviço</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             {% for cliente in clientes %}
-            <tr>
+            <tr id="cliente-{{ cliente.id }}">
                 <td>{{ cliente.nome }}</td>
                 <td>{{ cliente.email }}</td>
                 <td>{{ cliente.telefone }}</td>
                 <td>R$ {{ cliente.valor_servico }}</td>
+                <td>
+                    <form action="{{ url_for('main.excluir_cliente', id=cliente.id) }}" method="POST" class="delete-form">
+                        <button type="button" class="btn-excluir" onclick="confirmarExclusao('{{ cliente.id }}')">Excluir</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <br>
-    <a href="{{ url_for('main.exportar') }}">
-        <button>Exportar para Excel</button>
-    </a>
+    
+    <div class="btn-group">
+        <a href="{{ url_for('main.exportar') }}">
+            <button>Exportar para Excel</button>
+        </a>
+        <a href="{{ url_for('main.dashboard') }}">
+            <button>Voltar ao Menu</button>
+        </a>
+    </div>
+    
+    <div id="modalConfirmacao" class="modal">
+        <div class="modal-content">
+            <p>Tem certeza que deseja excluir este cliente?</p>
+            <div class="modal-buttons">
+                <button id="btnConfirmar" class="modal-btn confirm-btn">Confirmar</button>
+                <button id="btnCancelar" class="modal-btn cancel-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        
+        let clienteIdParaExcluir;
+        
+        const modal = document.getElementById('modalConfirmacao');
+        const btnConfirmar = document.getElementById('btnConfirmar');
+        const btnCancelar = document.getElementById('btnCancelar');
+        
+        function confirmarExclusao(clienteId) {
+            clienteIdParaExcluir = clienteId;
+            modal.style.display = 'block';
+        }
+        
+        btnConfirmar.addEventListener('click', function() {
+            
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/excluir_cliente/${clienteIdParaExcluir}`;
+            document.body.appendChild(form);
+            form.submit();
+        });
+        
+        btnCancelar.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
