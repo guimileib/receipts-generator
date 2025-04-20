@@ -119,14 +119,13 @@ def gerar_contrato():
         flash('Você precisa fazer login para gerar contratos', 'warning')
         return redirect(url_for('main.login'))
     
-    nome_func = request.form.get('nome_func', '')
+    nome = request.form.get('nome', '')
     cpf = request.form.get('cpf', '')
     servico = request.form.get('servico', '')
     valor = request.form.get('valor', '')
     endereco = request.form.get('endereco', '')
     data = request.form.get('data', '')
     
-    # Caminho corrigido para o arquivo de modelo
     caminho_modelo = os.path.join(os.getcwd(), "static", "doc", "contrato_modelo.docx")
     
     # Verificar se o arquivo existe
@@ -138,7 +137,7 @@ def gerar_contrato():
         doc = Document(caminho_modelo)
         
         substitutos = {
-            "{nome_func}": nome_func,
+            "{nome}": nome,
             "{cpf}": cpf,
             "{servico}": servico,
             "{valor}": valor,
@@ -151,7 +150,7 @@ def gerar_contrato():
         output = BytesIO()
         doc.save(output)
         output.seek(0)
-        nome_arquivo = f"contrato_{nome_func.replace(' ', '_')}.docx"
+        nome_arquivo = f"contrato_{nome.replace(' ', '_')}.docx"
         
         return send_file(
             output,
@@ -241,5 +240,17 @@ def exportar():
         flash(f'Erro ao exportar dados: {str(e)}', 'danger')
         return redirect(url_for('main.listar_clientes'))
     
-
+@main.route('/excluir_cliente/<int:id>', methods=['POST'])
+@login_required
+def excluir_cliente(id):
+    try:
+        cliente = Cliente.query.get_or_404(id)
+        db.session.delete(cliente)
+        db.session.commit()
+        flash('Cliente excluído com sucesso!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Erro ao excluir cliente: {str(e)}', 'danger')
+    
+    return redirect(url_for('main.listar_clientes'))
     
