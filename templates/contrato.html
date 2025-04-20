@@ -109,19 +109,14 @@
     <h1>Cadastro de Freelancers</h1>
 
     <form action="{{ url_for('main.gerar_contrato') }}" method="post">
-        <p><label >Nome: <input type="text" id="nome" autofocus name="nome" required></label></p>
-        <p><label >E-mail: <input type="email" id="email" name="email" placeholder="exemplo@mail.com" required></label></p>
-        <p><label >Telefone: <input type="tel" id="telefone" name="telefone" required></label></p>
-        <p><label >Endereço: <input type="text" id="endereco" name="endereco" required></label></p>
+        <p><label >Nome: <input type="text" id="nome_func" autofocus name="nome_func" required></label></p>
         <p><label >CPF: <input type="" id="cpf" name="cpf" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" placeholder="xxx.xxx.xxx-xx" required></label></p>
-        <p><label >Nome: <input type="text" id="nome" autofocus name="servico" required></label></p>
-
+        <p><label >Serviço: <input type="text" id="servico" name="servico" placeholder="Salgadeira, Monitor (...)" required></label></p>
         <p><label>Valor á pagar (R$): 
             <input type="number" id="service_value" name="service_value" step="1.00" min="0" required>
         </label></p>
-       
-        <p><label>Descrição do Serviço:</label></p>
-        <textarea id="service_description" name="service_description" rows="4" cols="50" required></textarea>
+        <p><label >Endereço: <input type="text" id="endereco" name="endereco" required></label></p>
+        <p><label >Data: <input type="date" id="data" autofocus name="data" required></label></p>
 
         <button type="submit">Gerar contrato</button>
     </form>
