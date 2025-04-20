@@ -13,7 +13,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #51ace9;
             color: #333;
             line-height: 1.6;
             display: flex;
@@ -23,17 +23,26 @@
             padding: 20px;
         }
 
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            width: 50%;
+            max-width: 200px;
+        }
+
         .container {
             text-align: center;
             background-color: lightgray;
-            box-shadow: 2px 2px 5px rgb(4, 66, 4);
+            box-shadow: 2px 2px 5px black;
             padding: 20px;
             border-radius: 5px;
+            max-width: 400px;
+            width: 100%;
         }
 
         h2 {
             margin-bottom: 10px;
-            color: #4CAF50;
+            color: #181086;
         }
 
         p {
@@ -60,12 +69,12 @@
 
         form input[type="text"]:focus,
         form input[type="password"]:focus {
-            border-color: #4CAF50;
+            border-color: #181086;
             outline: none;
         }
 
         form button {
-            background-color: #4CAF50;
+            background-color: #2a6fa8;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -76,14 +85,16 @@
         }
 
         form button:hover {
-            background-color: #45a049;
+            background-color: #2a6fa8;
         }
-        
+
     </style>
 </head>
 <body>
+    
     <div class="container">
-        <h2>Login</h2>
+        
+        <img class="logo" src="/static/images/logo_png.png" alt="Logo vila do sol">
         <p>Informe seu usuário e senha para acessar o sistema</p>
         <form method="POST">
             <input type="text" name="username" placeholder="Usuário" required>
