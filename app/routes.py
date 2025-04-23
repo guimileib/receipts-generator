@@ -8,7 +8,7 @@ import pandas as pd
 from docx import Document
 
 from . import db
-from app.clientes import Cliente
+from .clientes import Cliente
 from .pdf import gerar_pdf
 from .mail import enviar_email
 

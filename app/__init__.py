@@ -8,8 +8,7 @@ db = SQLAlchemy()  # Criado sem associar ao app ainda
 mail = Mail()
 
 def create_app(config_filename=None):
-    app = Flask(__name__,  instance_relative_config=True, static_url_path='/static')
-    app.static_folder = 'static'
+    app = Flask(__name__,  instance_relative_config=True, static_folder='static')
 
     load_dotenv()
 
