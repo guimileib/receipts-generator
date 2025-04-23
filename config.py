@@ -14,5 +14,3 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 
-
-
