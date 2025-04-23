@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Cadastro de Clientes</title>
@@ -12,7 +13,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #51ace9;
             color: #333;
             line-height: 1.6;
             padding: 20px;
@@ -24,7 +25,7 @@
         }
 
         h1 {
-            color: #4CAF50;
+            color: #ffffff;
         }
 
         nav {
@@ -45,7 +46,7 @@
 
         nav ul li a {
             text-decoration: none;
-            color: #4CAF50;
+            color: #ffffff;
             font-weight: bold;
         }
 
@@ -60,14 +61,15 @@
             background-color: #fff;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
             border: 1px solid #ccc;
         }
 
         th {
-            background-color: #4CAF50;
+            background-color: #110ca0;
             color: white;
         }
 
@@ -83,9 +85,9 @@
             color: #333;
         }
 
-        
+
         button {
-            background-color: #4CAF50;
+            background-color: #110ca0;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -93,11 +95,11 @@
             cursor: pointer;
             font-size: 16px;
         }
-        
+
         .btn-full {
             width: 100%;
         }
-        
+
         .btn-excluir {
             background-color: #f44336;
             color: white;
@@ -106,17 +108,17 @@
             border-radius: 3px;
             cursor: pointer;
         }
-        
+
         .btn-excluir:hover {
             background-color: #d32f2f;
         }
-        
+
         .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
-        
+
         .modal {
             display: none;
             position: fixed;
@@ -126,9 +128,9 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.4);
         }
-        
+
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -138,25 +140,25 @@
             border-radius: 5px;
             text-align: center;
         }
-        
+
         .modal-buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
-        
+
         .modal-btn {
             padding: 8px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         .confirm-btn {
             background-color: #f44336;
             color: white;
         }
-        
+
         .cancel-btn {
             background-color: #ccc;
             color: black;
@@ -164,6 +166,7 @@
     </style>
 
 </head>
+
 <body>
     <header>
         <h1>Clientes Cadastrados</h1>
@@ -171,23 +174,23 @@
 
     <nav>
         <ul>
-            <li><a href="{{ url_for('main.register') }}">Voltar para Cadastro</a></li> 
+            <li><a href="{{ url_for('main.register') }}">Voltar para Cadastro</a></li>
         </ul>
         <ul>
             <li><a href="{{ url_for('main.dashboard') }}">Voltar ao Menu Principal</a></li>
         </ul>
     </nav>
-    
+
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
-    
+
     <table border="1">
         <thead>
             <tr>
@@ -206,15 +209,17 @@
                 <td>{{ cliente.telefone }}</td>
                 <td>R$ {{ cliente.valor_servico }}</td>
                 <td>
-                    <form action="{{ url_for('main.excluir_cliente', id=cliente.id) }}" method="POST" class="delete-form">
-                        <button type="button" class="btn-excluir" onclick="confirmarExclusao('{{ cliente.id }}')">Excluir</button>
+                    <form action="{{ url_for('main.excluir_cliente', id=cliente.id) }}" method="POST"
+                        class="delete-form">
+                        <button type="button" class="btn-excluir"
+                            onclick="confirmarExclusao('{{ cliente.id }}')">Excluir</button>
                     </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
+
     <div class="btn-group">
         <a href="{{ url_for('main.exportar') }}">
             <button>Exportar para Excel</button>
@@ -223,7 +228,7 @@
             <button>Voltar ao Menu</button>
         </a>
     </div>
-    
+
     <div id="modalConfirmacao" class="modal">
         <div class="modal-content">
             <p>Tem certeza que deseja excluir este cliente?</p>
@@ -233,38 +238,39 @@
             </div>
         </div>
     </div>
-    
+
     <script>
-        
+
         let clienteIdParaExcluir;
-        
+
         const modal = document.getElementById('modalConfirmacao');
         const btnConfirmar = document.getElementById('btnConfirmar');
         const btnCancelar = document.getElementById('btnCancelar');
-        
+
         function confirmarExclusao(clienteId) {
             clienteIdParaExcluir = clienteId;
             modal.style.display = 'block';
         }
-        
-        btnConfirmar.addEventListener('click', function() {
-            
+
+        btnConfirmar.addEventListener('click', function () {
+
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = `/excluir_cliente/${clienteIdParaExcluir}`;
             document.body.appendChild(form);
             form.submit();
         });
-        
-        btnCancelar.addEventListener('click', function() {
+
+        btnCancelar.addEventListener('click', function () {
             modal.style.display = 'none';
         });
-        
-        window.addEventListener('click', function(event) {
+
+        window.addEventListener('click', function (event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
         });
     </script>
 </body>
+
 </html>
